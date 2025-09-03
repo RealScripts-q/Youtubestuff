@@ -52,62 +52,7 @@
     </section>
   </div>
 
-  <script>
-    const API_KEY = "AIzaSyD1FmPQDwEkZGwgMdy-9ImKuLhl7hqtod8"; // your key
-    const CHANNEL_ID = "UCKCKRcJVVdLSaZoKQU-CuVA"; // your channel ID
-
-    let subsGoal = 0;
-    let viewsGoal = 0;
-    const multiplier = 10;
-
-    function formatNumber(num) {
-      return parseInt(num, 10).toLocaleString();
-    }
-
-    function updateGoals(subs, views) {
-      subs = parseInt(subs, 10);
-      views = parseInt(views, 10);
-
-      // Initialize goals
-      if (subsGoal === 0) subsGoal = subs * multiplier;
-      if (viewsGoal === 0) viewsGoal = views * multiplier;
-
-      // Multiply goals by 10 if reached
-      if (subs >= subsGoal) subsGoal *= multiplier;
-      if (views >= viewsGoal) viewsGoal *= multiplier;
-
-      // Update spans directly
-      document.getElementById("subs").textContent = `${formatNumber(subs)} / ${formatNumber(subsGoal)} subs`;
-      document.getElementById("views").textContent = `${formatNumber(views)} / ${formatNumber(viewsGoal)} views`;
-    }
-
-    async function loadYouTubeStats() {
-      try {
-        const res = await fetch(
-          `https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${CHANNEL_ID}&key=${API_KEY}`
-        );
-        const data = await res.json();
-        const stats = data.items[0].statistics;
-        const snippet = data.items[0].snippet;
-
-        const createdDate = new Date(snippet.publishedAt);
-        const formattedDate = createdDate.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        });
-
-        document.getElementById("videos").textContent = `${stats.videoCount} videos uploaded`;
-        document.getElementById("created").textContent = formattedDate;
-
-        updateGoals(stats.subscriberCount, stats.viewCount);
-      } catch (err) {
-        console.error("Error fetching YouTube stats:", err);
-      }
-    }
-
-    loadYouTubeStats();
-    setInterval(loadYouTubeStats, 60000); // refresh every 60 seconds
-  </script>
+  <!-- Link to external JS -->
+  <script src="home.js"></script>
 </body>
 </html>
