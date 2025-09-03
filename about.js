@@ -1,10 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, increment, onValue, onDisconnect, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, set, get, onValue, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA8opUlOeceIHgVGlp3SAPnq0ojHMOSITA",
   authDomain: "fir-d8aef.firebaseapp.com",
-  databaseURL: "https://fir-d8aef-default-rtdb.firebaseio.com", // make sure this matches your Firebase DB URL
+  databaseURL: "https://fir-d8aef-default-rtdb.firebaseio.com", // 🔥 make sure this is correct
   projectId: "fir-d8aef",
   storageBucket: "fir-d8aef.appspot.com",
   messagingSenderId: "960351275873",
@@ -18,37 +18,32 @@ const db = getDatabase(app);
 // --- TOTAL VIEWS ---
 const totalViewsRef = ref(db, "stats/totalViews");
 
-// Only count once per browser (localStorage)
+// Only increment once per browser (saved in localStorage)
 if (!localStorage.getItem("viewCounted")) {
   get(totalViewsRef).then(snapshot => {
-    if (snapshot.exists()) {
-      const current = snapshot.val();
-      update(ref(db, "stats"), { totalViews: current + 1 });
-    } else {
-      set(totalViewsRef, 1);
-    }
+    const current = snapshot.exists() ? snapshot.val() : 0;
+    set(totalViewsRef, current + 1);
     localStorage.setItem("viewCounted", "true");
   });
 }
 
-// Listen to total views
+// Listen for total views updates
 onValue(totalViewsRef, (snap) => {
   document.getElementById("totalViews").textContent = snap.val() || 0;
 });
 
 // --- ACTIVE USERS ---
-const sessionId = crypto.randomUUID();
+const sessionId = crypto.randomUUID(); // unique ID per tab
 const activeUserRef = ref(db, "activeUsers/" + sessionId);
 
-// Add this user
+// Mark user as active
 set(activeUserRef, true);
 
-// Remove when user leaves
+// Remove when user closes tab
 onDisconnect(activeUserRef).remove();
 
-// Count active users
-const activeUsersRef = ref(db, "activeUsers");
-onValue(activeUsersRef, (snap) => {
+// Listen for active user count
+onValue(ref(db, "activeUsers"), (snap) => {
   const users = snap.val();
   const count = users ? Object.keys(users).length : 0;
   document.getElementById("activeUsers").textContent = count;
