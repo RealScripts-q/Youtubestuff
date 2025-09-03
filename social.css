@@ -1,0 +1,103 @@
+/* Import main.css base */
+@import url("main.css");
+
+/* Social section */
+.social-section {
+  margin-top: 150px;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Section title */
+.social-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 50px;
+  animation: fadeSlideUp 1.5s ease both;
+  letter-spacing: 1px;
+}
+
+/* Social cards container: 2 per row always */
+.social-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* exactly 2 per row */
+  gap: 25px;
+  justify-content: center;
+  max-width: 500px; /* keeps grid centered */
+  margin: 0 auto;
+}
+
+/* Individual social card */
+.social-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px; /* space between logo and text */
+  padding: 20px 30px;
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Social logos */
+.social-card img.social-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect for logos */
+.social-card:hover img.social-logo {
+  transform: scale(1.2) rotate(5deg);
+}
+
+/* Hover effect for the card */
+.social-card:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.35), 0 6px 10px rgba(0,0,0,0.15);
+  filter: brightness(1.1);
+}
+
+/* Individual brand gradients */
+.social-card.twitter { background: linear-gradient(135deg, #1DA1F2, #0d8ddb); }
+.social-card.discord { background: linear-gradient(135deg, #7289DA, #5b6ea0); }
+.social-card.youtube { background: linear-gradient(135deg, #FF0000, #cc0000); }
+.social-card.tiktok { background: linear-gradient(135deg, #69C9D0, #0a839d); }
+.social-card.instagram { background: linear-gradient(135deg, #E1306C, #C13584); }
+
+/* Fade + slide animation */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive: scale sizes but keep 2-per-row layout */
+@media (max-width: 1024px) {
+  .social-title { font-size: 32px; }
+  .social-card { font-size: 16px; padding: 16px 24px; }
+  .social-cards { gap: 20px; max-width: 450px; }
+}
+
+@media (max-width: 768px) {
+  .social-title { font-size: 28px; }
+  .social-card { font-size: 14px; padding: 14px 20px; }
+  .social-cards { gap: 18px; max-width: 400px; }
+}
+
+@media (max-width: 480px) {
+  .social-title { font-size: 24px; }
+  .social-card { font-size: 12px; padding: 12px 18px; }
+  .social-cards { gap: 15px; max-width: 350px; }
+}

@@ -1,0 +1,49 @@
+/* Import main.css base if needed */
+@import url("main.css");
+
+/* Intro text section */
+.intro-text {
+  margin-top: 200px; /* space under profile */
+  text-align: center;
+  padding: 20px;
+}
+
+.intro-text h1 {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--fg);
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeSlideUp 1.5s ease both;
+}
+
+/* Highlight spans */
+.highlight {
+  color: var(--fg);
+  background: linear-gradient(135deg, #7c5cff, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+/* Animation */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive scaling */
+@media (max-width: 768px) {
+  .intro-text h1 {
+    font-size: 20px;
+  }
+}
+

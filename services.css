@@ -1,0 +1,91 @@
+/* Import main.css base */
+@import url("main.css");
+
+/* Services Section */
+.services-section {
+  margin-top: 150px;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* Section title */
+.services-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 40px;
+  animation: fadeSlideUp 1.5s ease both;
+}
+
+/* Individual service card */
+.service-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.35);
+  filter: brightness(1.05);
+}
+
+/* Video container */
+.service-video {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  margin-bottom: 15px;
+}
+
+/* Description */
+.service-description {
+  font-size: 16px;
+  color: #ccc;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+/* Link */
+.service-link {
+  font-size: 16px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-block;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.service-link:hover {
+  transform: translateY(-3px) scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Fade + slide animation */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .services-title { font-size: 28px; }
+  .service-description, .service-link { font-size: 14px; }
+}
+
+@media (max-width: 480px) {
+  .services-title { font-size: 24px; }
+  .service-description, .service-link { font-size: 12px; }
+}
+
+
