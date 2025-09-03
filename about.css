@@ -53,6 +53,30 @@
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
+/* Stats counters */
+.stats {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: center;
+}
+
+.stats h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--fg);
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeSlideUp 1.2s ease both;
+}
+
+.stats span {
+  font-weight: 800;
+  font-size: 24px;
+}
+
 /* Animation for fade + slide effect */
 @keyframes fadeSlideUp {
   from {
@@ -74,5 +98,13 @@
   .contact-btn {
     font-size: 14px;
     padding: 10px 20px;
+  }
+
+  .stats h2 {
+    font-size: 18px;
+  }
+
+  .stats span {
+    font-size: 20px;
   }
 }
