@@ -53,34 +53,6 @@
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-/* Top-right total views */
-.total-views {
-  position: absolute;
-  top: 65px; /* closer under navbar */
-  right: 25px;
-  background: #000; /* black background so it looks like it's hanging */
-  padding: 6px 14px;
-  border-radius: 8px;
-  border: 2px solid rgba(255,255,255,0.1);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  animation: fadeSlideUp 1.2s ease both;
-}
-
-.total-views h2 {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0;
-  color: var(--fg);
-  background: linear-gradient(135deg, var(--brand), var(--brand-2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.total-views span {
-  font-weight: 800;
-  font-size: 18px;
-}
-
 /* Animation for fade + slide effect */
 @keyframes fadeSlideUp {
   from {
@@ -102,19 +74,5 @@
   .contact-btn {
     font-size: 14px;
     padding: 10px 20px;
-  }
-
-  .total-views {
-    top: 60px;
-    right: 15px;
-    padding: 5px 12px;
-  }
-
-  .total-views h2 {
-    font-size: 14px;
-  }
-
-  .total-views span {
-    font-size: 16px;
   }
 }
