@@ -26,9 +26,11 @@
   border-radius: var(--radius-lg);
   padding: 20px;
   margin: 20px auto;
-  max-width: 600px;
+  max-width: 800px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  text-align: left;
+  word-wrap: break-word;
 }
 
 .service-card:hover {
@@ -40,17 +42,19 @@
 /* Video container */
 .service-video {
   width: 100%;
-  height: auto;
+  height: 450px;
   border-radius: var(--radius-md);
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 /* Description */
 .service-description {
-  font-size: 16px;
+  font-size: 15px;
   color: #ccc;
   margin-bottom: 15px;
-  text-align: left;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  white-space: pre-line; /* preserves line breaks */
 }
 
 /* Link */
@@ -64,6 +68,7 @@
   padding: 10px 20px;
   border-radius: var(--radius-md);
   transition: transform 0.3s ease, filter 0.3s ease;
+  margin-top: 10px;
 }
 
 .service-link:hover {
@@ -80,12 +85,12 @@
 /* Responsive */
 @media (max-width: 768px) {
   .services-title { font-size: 28px; }
+  .service-video { height: 300px; }
   .service-description, .service-link { font-size: 14px; }
 }
 
 @media (max-width: 480px) {
   .services-title { font-size: 24px; }
+  .service-video { height: 220px; }
   .service-description, .service-link { font-size: 12px; }
 }
-
-
