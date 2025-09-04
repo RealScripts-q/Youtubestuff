@@ -1,8 +1,7 @@
-// Firebase global total views
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
-import { getDatabase, ref, get, set, runTransaction } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, get, set, runTransaction, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// Your Firebase config
+// --- Your Firebase config ---
 const firebaseConfig = {
   apiKey: "AIzaSyA8opUlOeceIHgVGlp3SAPnq0ojHMOSITA",
   authDomain: "fir-d8aef.firebaseapp.com",
@@ -18,25 +17,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+// DOM loaded
 document.addEventListener("DOMContentLoaded", async () => {
   const totalViewsEl = document.getElementById("totalViews");
   if (!totalViewsEl) return;
 
-  // Track if this user has already been counted in this browser
-  let hasVisited = localStorage.getItem("hasVisited");
+  const viewsRef = ref(db, "stats/totalViews");
 
-  const viewsRef = ref(db, "totalViews");
-
-  if (!hasVisited) {
-    // Increment totalViews atomically
+  // Increment view if not counted in this browser
+  if (!localStorage.getItem("viewCounted")) {
     await runTransaction(viewsRef, (current) => {
       return (current || 0) + 1;
     });
-    localStorage.setItem("hasVisited", "true");
+    localStorage.setItem("viewCounted", "true");
   }
 
-  // Get the current total views
-  get(viewsRef).then((snapshot) => {
-    totalViewsEl.textContent = snapshot.val() || 0;
+  // Listen for total views changes
+  onValue(viewsRef, (snapshot) => {
+    totalViewsEl.textContent = snapshot.exists() ? snapshot.val() : 0;
   });
 });
