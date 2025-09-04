@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RealScripts Gamers - Home</title>
   <link rel="stylesheet" href="main.css">
   <link rel="stylesheet" href="home.css">
@@ -30,9 +30,14 @@
       </div>
     </nav>
 
-    <!-- ✅ Total Views display (script in main.js updates #totalViews) -->
+    <!-- ✅ Total Views display (auto-updated by main.js) -->
     <div class="total-views">
-      <h2>Total Views: <span id="totalViews">0</span></h2>
+      <h2 style="display:inline-block; margin:0;">
+        Total Views:
+        <span id="totalViews">0</span>
+      </h2>
+      <!-- status updated by main.js -->
+      <small id="totalStatus" style="margin-left:10px; font-weight:600; color:inherit;">checking...</small>
     </div>
 
     <!-- Profile -->
@@ -46,11 +51,11 @@
     <!-- Intro Text with live stats -->
     <section class="intro-text">
       <h1>
-        Hi, I am a small YouTuber with 
+        Hi, I am a small YouTuber with
         <span id="subs" class="highlight">loading subs...</span><br>
-        and accomplished over 
+        and accomplished over
         <span id="views" class="highlight">loading views...</span> currently,<br>
-        with over 
+        with over
         <span id="videos" class="highlight">loading videos...</span>.<br><br>
         Channel created on <span id="created" class="highlight">loading date...</span>.
       </h1>
