@@ -1,106 +1,146 @@
-// main.js — Robust Unique View Counter (site-wide, multi-page)
-// Paste/replace this into your existing main.js
+// main.js — Robust Unique View Counter (auto-healing)
 
 (() => {
-  if (window.ViewCounter && window.ViewCounter._initialized) {
-    console.log('ViewCounter already initialized.');
-    return;
-  }
+  if (window.ViewCounter && window.ViewCounter._initialized) return;
 
   // ========== CONFIG ==========
-  const NAMESPACE = "realscripts-q-youtubestuff"; // keep this consistent across pages
+  const NAMESPACE = "realscripts-q-youtubestuff"; // site-wide namespace
   const TOTAL_KEY = "unique-visitors";
 
-  // localStorage keys used for fallback & flags
+  // localStorage keys
   const flagKey = () => `viewcounter.unique.recorded@${NAMESPACE}`;
   const fallbackTotalKey = `viewcounter.fallback.total@${NAMESPACE}`;
   const fallbackFlagKey = () => `viewcounter.fallback.flag@${NAMESPACE}`;
 
   // ========== DOM helpers ==========
-  const getTotalEl = () => document.getElementById('totalViews');
-  const getStatusEl = () => document.getElementById('totalStatus'); // optional element
+  const totalEl = document.getElementById("totalViews");
+  const statusEl = document.getElementById("totalStatus");
 
-  function setStatus(text, className) {
-    const s = getStatusEl();
-    if (!s) return;
-    s.textContent = text;
-    s.className = className || '';
-  }
+  const setStatus = (txt, cls) => {
+    if (!statusEl) return;
+    statusEl.textContent = txt;
+    statusEl.className = cls || "";
+  };
 
-  function showTotal(value) {
-    const el = getTotalEl();
-    if (!el) return;
-    el.textContent = value == null ? '—' : Number(value).toLocaleString();
-  }
+  const showTotal = (val) => {
+    if (!totalEl) return;
+    if (val == null || isNaN(val) || val < 0) {
+      totalEl.textContent = "—";
+    } else {
+      totalEl.textContent = Number(val).toLocaleString();
+    }
+  };
 
   // ========== CountAPI helpers ==========
-  async function apiFetch(url, opts = {}) {
-    const res = await fetch(url, opts);
-    // try to parse JSON safely
+  async function apiFetch(url) {
+    const res = await fetch(url).catch(() => null);
+    if (!res) return { ok: false, status: 0, json: null };
     let json = null;
-    try { json = await res.json(); } catch (e) { /* ignore */ }
-    return { ok: res.ok, status: res.status, json, res };
+    try {
+      json = await res.json();
+    } catch {}
+    return { ok: res.ok, status: res.status, json };
   }
 
-  async function createCountAPIKey(key, initial = 0) {
-    // create endpoint: GET /create?namespace=..&key=..&value=..
-    const url = `https://api.countapi.xyz/create?namespace=${encodeURIComponent(NAMESPACE)}&key=${encodeURIComponent(key)}&value=${encodeURIComponent(initial)}`;
-    const r = await apiFetch(url);
-    return r.ok;
+  async function createKey(key, val = 0) {
+    const url = `https://api.countapi.xyz/create?namespace=${NAMESPACE}&key=${key}&value=${val}`;
+    return (await apiFetch(url)).ok;
   }
 
-  async function getCountAPI(key) {
-    const url = `https://api.countapi.xyz/get/${encodeURIComponent(NAMESPACE)}/${encodeURIComponent(key)}`;
+  async function getCount(key) {
+    const url = `https://api.countapi.xyz/get/${NAMESPACE}/${key}`;
     const r = await apiFetch(url);
     if (r.status === 404) return { notFound: true, value: null };
-    if (!r.ok || !r.json || typeof r.json.value === 'undefined') {
-      throw new Error('CountAPI get failed');
-    }
+    if (!r.ok || !r.json || typeof r.json.value === "undefined") throw new Error("CountAPI get failed");
     return { notFound: false, value: Number(r.json.value) };
   }
 
-  async function hitCountAPI(key) {
-    const url = `https://api.countapi.xyz/hit/${encodeURIComponent(NAMESPACE)}/${encodeURIComponent(key)}`;
+  async function hitCount(key) {
+    const url = `https://api.countapi.xyz/hit/${NAMESPACE}/${key}`;
     const r = await apiFetch(url);
-    if (!r.ok || !r.json || typeof r.json.value === 'undefined') {
-      throw new Error('CountAPI hit failed');
-    }
+    if (!r.ok || !r.json || typeof r.json.value === "undefined") throw new Error("CountAPI hit failed");
     return Number(r.json.value);
   }
 
-  // ========== Fallback (localStorage) ==========
-  // Note: this fallback is local to each browser. It's used only when CountAPI isn't available.
-  function useFallbackIncrementIfNeeded() {
+  // ========== Fallback (localStorage only) ==========
+  function fallbackInc() {
     const flag = fallbackFlagKey();
-    let total = parseInt(localStorage.getItem(fallbackTotalKey) || '0', 10) || 0;
+    let total = parseInt(localStorage.getItem(fallbackTotalKey) || "0", 10) || 0;
     if (!localStorage.getItem(flag)) {
-      total += 1;
+      total++;
       localStorage.setItem(fallbackTotalKey, String(total));
-      localStorage.setItem(flag, '1');
+      localStorage.setItem(flag, "1");
     }
     return total;
   }
 
-  function fallbackGetTotal() {
-    return parseInt(localStorage.getItem(fallbackTotalKey) || '0', 10) || 0;
+  function fallbackGet() {
+    return parseInt(localStorage.getItem(fallbackTotalKey) || "0", 10) || 0;
+  }
+
+  // ========== Auto-healing reset ==========
+  function autoReset() {
+    localStorage.removeItem(flagKey());
+    localStorage.removeItem(fallbackFlagKey());
+    console.warn("⚠️ Auto-reset local visitor flags due to invalid counter.");
   }
 
   // ========== Main flow ==========
   async function run() {
-    const totalEl = getTotalEl();
-    if (!totalEl) {
-      // nothing to update on this page
+    if (!totalEl) return;
+
+    try {
+      setStatus("checking...", "");
+
+      const res = await getCount(TOTAL_KEY);
+      if (res.notFound) {
+        await createKey(TOTAL_KEY, 0);
+      }
+
+      let total;
+      if (!localStorage.getItem(flagKey())) {
+        total = await hitCount(TOTAL_KEY);
+        localStorage.setItem(flagKey(), "1");
+      } else {
+        const fresh = await getCount(TOTAL_KEY);
+        total = fresh.value;
+      }
+
+      // auto-heal if broken
+      if (!total || isNaN(total) || total < 0) {
+        autoReset();
+        total = await hitCount(TOTAL_KEY); // recount
+        localStorage.setItem(flagKey(), "1");
+      }
+
+      showTotal(total);
+      setStatus("online", "ok");
       return;
+    } catch (err) {
+      console.error("CountAPI failed, using fallback:", err);
     }
 
-    // try CountAPI path
+    // fallback path
     try {
-      setStatus('checking...', '');
+      const total = fallbackInc();
+      showTotal(total);
+      setStatus("offline — fallback", "warn");
+    } catch (e) {
+      console.error("Fallback failed", e);
+      showTotal(null);
+      setStatus("error", "warn");
+    }
+  }
 
-      // ensure counter exists (get -> create if 404)
-      const getRes = await getCountAPI(TOTAL_KEY);
-      if (getRes.notFound) {
-        // attempt to create; if creation fails we will fall back later
+  run();
+
+  // ========== Expose API ==========
+  window.ViewCounter = {
+    _initialized: true,
+    resetLocal: autoReset,
+    refresh: run,
+  };
+})();
         const created = await createCountAPIKey(TOTAL_KEY, 0).catch(() => false);
         if (!created) throw new Error('create failed');
       }
