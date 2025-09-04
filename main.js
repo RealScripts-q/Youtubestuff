@@ -1,39 +1,47 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, get, set, runTransaction, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { getDatabase, ref, runTransaction, onValue } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
-// --- Your Firebase config ---
+// ----- Firebase Config -----
 const firebaseConfig = {
-  apiKey: "AIzaSyA8opUlOeceIHgVGlp3SAPnq0ojHMOSITA",
-  authDomain: "fir-d8aef.firebaseapp.com",
-  databaseURL: "https://fir-d8aef-default-rtdb.firebaseio.com",
-  projectId: "fir-d8aef",
-  storageBucket: "fir-d8aef.appspot.com",
-  messagingSenderId: "960351275873",
-  appId: "1:960351275873:web:cb6af1244a6b5535215320",
-  measurementId: "G-GPS17MR0PZ"
+  apiKey: "AIzaSyByjy-54upbb6-BHf4SSbInNN-EtUTOFcg",
+  authDomain: "realscriptsstats.firebaseapp.com",
+  databaseURL: "https://realscriptsstats-default-rtdb.firebaseio.com",
+  projectId: "realscriptsstats",
+  storageBucket: "realscriptsstats.firebasestorage.app",
+  messagingSenderId: "221204397485",
+  appId: "1:221204397485:web:238c5068057dbce166b524",
+  measurementId: "G-RL585C0KYK"
 };
 
-// Initialize Firebase
+// ----- Initialize Firebase -----
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// DOM loaded
+// ----- Total Views Logic -----
 document.addEventListener("DOMContentLoaded", async () => {
   const totalViewsEl = document.getElementById("totalViews");
-  if (!totalViewsEl) return;
+  if (!totalViewsEl) return; // Stop if element not found
 
   const viewsRef = ref(db, "stats/totalViews");
 
-  // Increment view if not counted in this browser
-  if (!localStorage.getItem("viewCounted")) {
-    await runTransaction(viewsRef, (current) => {
-      return (current || 0) + 1;
-    });
-    localStorage.setItem("viewCounted", "true");
-  }
+  try {
+    // Increment view once per browser
+    if (!localStorage.getItem("viewCounted")) {
+      await runTransaction(viewsRef, (current) => {
+        if (current === null) return 1; // Initialize if empty
+        return current + 1; // Increment
+      });
+      localStorage.setItem("viewCounted", "true");
+    }
 
-  // Listen for total views changes
-  onValue(viewsRef, (snapshot) => {
-    totalViewsEl.textContent = snapshot.exists() ? snapshot.val() : 0;
-  });
+    // Real-time display
+    onValue(viewsRef, (snapshot) => {
+      const total = snapshot.exists() ? snapshot.val() : 0;
+      totalViewsEl.textContent = total;
+    });
+
+  } catch (err) {
+    console.error("Firebase error:", err);
+    totalViewsEl.textContent = "Error";
+  }
 });
