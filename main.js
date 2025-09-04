@@ -1,47 +1,51 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getDatabase, ref, runTransaction, onValue } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+// =========================
+// Unique View Counter (shared across all pages)
+// =========================
 
-// ----- Firebase Config -----
-const firebaseConfig = {
-  apiKey: "AIzaSyByjy-54upbb6-BHf4SSbInNN-EtUTOFcg",
-  authDomain: "realscriptsstats.firebaseapp.com",
-  databaseURL: "https://realscriptsstats-default-rtdb.firebaseio.com",
-  projectId: "realscriptsstats",
-  storageBucket: "realscriptsstats.firebasestorage.app",
-  messagingSenderId: "221204397485",
-  appId: "1:221204397485:web:238c5068057dbce166b524",
-  measurementId: "G-RL585C0KYK"
-};
+const NAMESPACE = "realscripts-q-youtubestuff";
+const TOTAL_KEY = "unique-visitors";
 
-// ----- Initialize Firebase -----
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+// Local flag so each device only counts once
+function uniqueFlagKey() {
+  return `viewcounter.unique.recorded@${NAMESPACE}`;
+}
 
-// ----- Total Views Logic -----
-document.addEventListener("DOMContentLoaded", async () => {
-  const totalViewsEl = document.getElementById("totalViews");
-  if (!totalViewsEl) return; // Stop if element not found
+// CountAPI helpers
+async function hitCount(key) {
+  const url = `https://api.countapi.xyz/hit/${NAMESPACE}/${key}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("CountAPI error");
+  const data = await res.json();
+  return data.value;
+}
 
-  const viewsRef = ref(db, "stats/totalViews");
+async function getCount(key) {
+  const url = `https://api.countapi.xyz/get/${NAMESPACE}/${key}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("CountAPI error");
+  const data = await res.json();
+  return data.value;
+}
+
+// Main setup function
+(async function setupViewCounter() {
+  const totalEl = document.getElementById("totalViews");
+  if (!totalEl) return; // if page has no counter, skip
 
   try {
-    // Increment view once per browser
-    if (!localStorage.getItem("viewCounted")) {
-      await runTransaction(viewsRef, (current) => {
-        if (current === null) return 1; // Initialize if empty
-        return current + 1; // Increment
-      });
-      localStorage.setItem("viewCounted", "true");
+    const flag = uniqueFlagKey();
+    let total;
+    if (!localStorage.getItem(flag)) {
+      // First visit → increment
+      total = await hitCount(TOTAL_KEY);
+      localStorage.setItem(flag, "1");
+    } else {
+      // Already counted → just fetch
+      total = await getCount(TOTAL_KEY);
     }
-
-    // Real-time display
-    onValue(viewsRef, (snapshot) => {
-      const total = snapshot.exists() ? snapshot.val() : 0;
-      totalViewsEl.textContent = total;
-    });
-
+    totalEl.textContent = Number(total).toLocaleString();
   } catch (err) {
-    console.error("Firebase error:", err);
-    totalViewsEl.textContent = "Error";
+    console.error("View counter error:", err);
+    totalEl.textContent = "—";
   }
-});
+})();
