@@ -22,6 +22,12 @@ async function hitCount(key) {
 async function getCount(key) {
   const url = `https://api.countapi.xyz/get/${NAMESPACE}/${key}`;
   const res = await fetch(url);
+  if (res.status === 404) {
+    // counter doesn't exist yet → create it with 0
+    const createUrl = `https://api.countapi.xyz/create?namespace=${NAMESPACE}&key=${key}&value=0`;
+    await fetch(createUrl);
+    return 0;
+  }
   if (!res.ok) throw new Error("CountAPI error");
   const data = await res.json();
   return data.value;
@@ -30,17 +36,17 @@ async function getCount(key) {
 // Main setup function
 (async function setupViewCounter() {
   const totalEl = document.getElementById("totalViews");
-  if (!totalEl) return; // if page has no counter, skip
+  if (!totalEl) return; // no counter on this page
 
   try {
     const flag = uniqueFlagKey();
     let total;
     if (!localStorage.getItem(flag)) {
-      // First visit → increment
+      // First visit → increment global count
       total = await hitCount(TOTAL_KEY);
       localStorage.setItem(flag, "1");
     } else {
-      // Already counted → just fetch
+      // Returning visitor → just fetch
       total = await getCount(TOTAL_KEY);
     }
     totalEl.textContent = Number(total).toLocaleString();
