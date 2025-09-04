@@ -1,104 +1,144 @@
-// =======================
-// main.js for RealScripts
-// =======================
+// main.js (module) — RealScripts stats
+// Usage: <script type="module" src="main.js"></script>
 
-(function () {
-  // === Total Views ===
-  const TOTAL_KEY = "site_total_views";
-  const VISITED_KEY = "site_has_visited";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import {
+  getDatabase,
+  ref,
+  set,
+  get,
+  onValue,
+  onDisconnect,
+  runTransaction,
+  remove
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-  function safeGet(key, fallback) {
-    try {
-      const value = localStorage.getItem(key);
-      if (value === null || isNaN(Number(value))) return fallback;
-      return Number(value);
-    } catch (e) {
-      console.warn("Storage error, resetting:", e);
-      return fallback;
-    }
+(async () => {
+  // ======== CONFIG ========
+  const firebaseConfig = {
+    apiKey: "AIzaSyByjy-54upbb6-BHf4SSbInNN-EtUTOFcg",
+    authDomain: "realscriptsstats.firebaseapp.com",
+    databaseURL: "https://realscriptsstats-default-rtdb.firebaseio.com",
+    projectId: "realscriptsstats",
+    storageBucket: "realscriptsstats.firebasestorage.app",
+    messagingSenderId: "221204397485",
+    appId: "1:221204397485:web:238c5068057dbce166b524",
+    measurementId: "G-RL585C0KYK"
+  };
+
+  const NAMESPACE = "realscripts-q-youtubestuff";
+
+  // DOM targets
+  const totalEl = document.getElementById("totalViews");
+  const activeEl = document.getElementById("activeUsers");
+  const statusEl = document.getElementById("totalStatus");
+
+  function setStatus(text, cls = "") {
+    if (!statusEl) return;
+    statusEl.textContent = text;
+    statusEl.className = cls;
   }
 
-  function safeSet(key, value) {
-    try {
-      localStorage.setItem(key, String(value));
-    } catch (e) {
-      console.error("Storage write error:", e);
-    }
+  function showTotal(n) {
+    if (totalEl) totalEl.textContent = n == null ? "—" : Number(n).toLocaleString();
   }
 
-  function updateTotalViews() {
-    let total = safeGet(TOTAL_KEY, 0);
-
-    // Increment only once per device/browser
-    if (!localStorage.getItem(VISITED_KEY)) {
-      total++;
-      safeSet(TOTAL_KEY, total);
-      localStorage.setItem(VISITED_KEY, "true");
-    }
-
-    // Update DOM
-    const el = document.getElementById("totalViews");
-    if (el) el.textContent = total;
-
-    const status = document.getElementById("totalStatus");
-    if (status) status.textContent = "online";
+  function showActive(n) {
+    if (activeEl) activeEl.textContent = n == null ? "0" : Number(n);
   }
 
-  updateTotalViews();
+  function genSessionId() {
+    return "rs-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+  }
 
-  // Auto-heal check every 5s
-  setInterval(() => {
-    const total = safeGet(TOTAL_KEY, 0);
-    if (isNaN(total) || total < 0) {
-      console.warn("Corrupt counter detected, resetting...");
-      safeSet(TOTAL_KEY, 0);
-      localStorage.removeItem(VISITED_KEY);
-      updateTotalViews();
+  // === Firebase init ===
+  let db;
+  try {
+    const app = initializeApp(firebaseConfig);
+    db = getDatabase(app);
+  } catch (err) {
+    console.error("Firebase init error:", err);
+    setStatus("error");
+    showTotal(null);
+    showActive(0);
+    return;
+  }
+
+  // === Unique Visitors ===
+  let sessionId = localStorage.getItem("rs_session_id");
+  if (!sessionId) {
+    sessionId = genSessionId();
+    localStorage.setItem("rs_session_id", sessionId);
+  }
+
+  const uniqueVisitorRef = ref(db, `uniqueVisitors/${NAMESPACE}/${sessionId}`);
+  const counterRef = ref(db, `counters/${NAMESPACE}/uniqueVisitors`);
+
+  try {
+    const existing = await get(uniqueVisitorRef);
+    if (!existing.exists()) {
+      await runTransaction(counterRef, (current = 0) => (current || 0) + 1);
+      await set(uniqueVisitorRef, { created: Date.now() });
     }
-  }, 5000);
+  } catch (err) {
+    console.warn("Unique visitor registration failed:", err);
+  }
+
+  onValue(counterRef, (snap) => {
+    const v = snap.exists() ? Number(snap.val() || 0) : 0;
+    showTotal(v);
+    setStatus("online");
+  });
 
   // === Active Visitors ===
-  const ACTIVE_KEY = "site_active_users";
-  const ACTIVE_TIMEOUT = 10000; // 10s heartbeat
-  const myId = Date.now() + "-" + Math.random();
+  const presencePath = `presence/${NAMESPACE}`;
+  const myPresenceRef = ref(db, `${presencePath}/${sessionId}`);
+  const presenceParentRef = ref(db, presencePath);
 
-  function updateActiveUsers() {
-    const now = Date.now();
-    let active = [];
+  const HEARTBEAT_MS = 5000;
+  const ACTIVE_TTL = 15000;
 
+  async function heartbeat() {
+    await set(myPresenceRef, { lastSeen: Date.now() });
     try {
-      active = JSON.parse(localStorage.getItem(ACTIVE_KEY) || "[]");
-    } catch {
-      active = [];
-    }
-
-    // Keep only recent tabs (alive)
-    active = active.filter(entry => now - entry.time < ACTIVE_TIMEOUT);
-
-    // Add/refresh this tab
-    active.push({ id: myId, time: now });
-
-    // Save back
-    localStorage.setItem(ACTIVE_KEY, JSON.stringify(active));
-
-    // Update DOM
-    const el = document.getElementById("activeUsers");
-    if (el) el.textContent = active.length;
+      onDisconnect(myPresenceRef).remove();
+    } catch {}
   }
 
-  // Run heartbeat every 5s
-  setInterval(updateActiveUsers, 5000);
-  updateActiveUsers();
+  heartbeat();
+  const hbInterval = setInterval(heartbeat, HEARTBEAT_MS);
 
-  // Remove this tab from active list on close
-  window.addEventListener("beforeunload", () => {
-    let active = [];
-    try {
-      active = JSON.parse(localStorage.getItem(ACTIVE_KEY) || "[]");
-    } catch {
-      active = [];
-    }
-    active = active.filter(entry => entry.id !== myId);
-    localStorage.setItem(ACTIVE_KEY, JSON.stringify(active));
+  function computeActiveCount(snapshot) {
+    const now = Date.now();
+    let count = 0;
+    snapshot.forEach((child) => {
+      const val = child.val();
+      if (val && val.lastSeen && now - val.lastSeen < ACTIVE_TTL) count++;
+    });
+    return count;
+  }
+
+  onValue(presenceParentRef, (snap) => {
+    showActive(computeActiveCount(snap));
   });
+
+  window.addEventListener("beforeunload", () => {
+    try {
+      remove(myPresenceRef);
+    } catch {}
+  });
+
+  // Debug helpers
+  window.ViewCounter = {
+    sessionId,
+    resetLocal: () => {
+      localStorage.removeItem("rs_session_id");
+      console.log("Local session reset.");
+    },
+    stop: () => {
+      clearInterval(hbInterval);
+      remove(myPresenceRef).catch(() => {});
+      console.log("Stopped heartbeat.");
+    }
+  };
 })();
