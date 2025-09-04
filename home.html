@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RealScripts Gamers - Home</title>
   <link rel="stylesheet" href="main.css">
   <link rel="stylesheet" href="home.css">
@@ -26,18 +26,24 @@
           <a href="services.html">Services</a>
           <a href="contact.html">Contact</a>
           <a href="social.html">Social</a>
-
-          <!-- ✅ Stats Dropdown -->
-          <div class="dropdown">
-            <button class="dropbtn">📊 Stats</button>
-            <div class="dropdown-content">
-              <p>Total Views: <span id="totalViews">0</span></p>
-              <p>Active Users: <span id="activeUsers">0</span></p>
-            </div>
-          </div>
         </div>
       </div>
     </nav>
+
+    <!-- ✅ Total + Active Views display -->
+    <div class="total-views">
+      <h2 style="margin:0;">
+        Total Views: <span id="totalViews">0</span>
+      </h2>
+      <small id="totalStatus" style="margin-left:10px; font-weight:600; color:inherit;">
+        checking...
+      </small>
+
+      <!-- NEW Active Visitors -->
+      <h3 style="margin:5px 0 0;">
+        Active Visitors: <span id="activeUsers">0</span>
+      </h3>
+    </div>
 
     <!-- Profile -->
     <div class="profile-wrap">
@@ -50,11 +56,11 @@
     <!-- Intro Text with live stats -->
     <section class="intro-text">
       <h1>
-        Hi, I am a small YouTuber with 
+        Hi, I am a small YouTuber with
         <span id="subs" class="highlight">loading subs...</span><br>
-        and accomplished over 
+        and accomplished over
         <span id="views" class="highlight">loading views...</span> currently,<br>
-        with over 
+        with over
         <span id="videos" class="highlight">loading videos...</span>.<br><br>
         Channel created on <span id="created" class="highlight">loading date...</span>.
       </h1>
