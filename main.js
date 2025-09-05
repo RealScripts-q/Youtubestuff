@@ -1,5 +1,4 @@
-// main.js (module) — RealScripts stats
-// Usage: <script type="module" src="main.js"></script>
+// RealScripts stats
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import {
@@ -32,6 +31,17 @@ import {
   const totalEl = document.getElementById("totalViews");
   const activeEl = document.getElementById("activeUsers");
   const statusEl = document.getElementById("totalStatus");
+  const statsPanel = document.getElementById("statsPanel");
+  const toggleBtn = document.getElementById("toggleStats");
+
+  // Toggle button
+  if (toggleBtn && statsPanel) {
+    toggleBtn.addEventListener("click", () => {
+      statsPanel.style.display =
+        statsPanel.style.display === "none" ? "block" : "none";
+      toggleBtn.textContent = statsPanel.style.display === "none" ? "+" : "–";
+    });
+  }
 
   function setStatus(text, cls = "") {
     if (!statusEl) return;
