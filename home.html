@@ -30,19 +30,14 @@
       </div>
     </nav>
 
-    <!-- ✅ Total + Active Views display -->
-    <div class="total-views">
-      <h2 style="margin:0;">
-        Total Views: <span id="totalViews">0</span>
-      </h2>
-      <small id="totalStatus" style="margin-left:10px; font-weight:600; color:inherit;">
-        checking...
-      </small>
-
-      <!-- NEW Active Visitors -->
-      <h3 style="margin:5px 0 0;">
-        Active Visitors: <span id="activeUsers">0</span>
-      </h3>
+    <!-- Stats Dropdown -->
+    <div class="stats">
+      <button id="toggleStats">–</button>
+      <div id="statsPanel">
+        <h2>Total Views: <span id="totalViews">0</span></h2>
+        <small id="totalStatus">checking...</small>
+        <h3>Active Visitors: <span id="activeUsers">0</span></h3>
+      </div>
     </div>
 
     <!-- Profile -->
@@ -53,7 +48,7 @@
       <span class="profile-name">RealScripts_q</span>
     </div>
 
-    <!-- Intro Text with live stats -->
+    <!-- Intro -->
     <section class="intro-text">
       <h1>
         Hi, I am a small YouTuber with
@@ -69,6 +64,6 @@
 
   <!-- Page scripts -->
   <script src="home.js"></script>
-  <script type="module" src="main.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
