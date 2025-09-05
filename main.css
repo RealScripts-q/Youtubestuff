@@ -1,4 +1,4 @@
-:root {
+ :root {
   --bg: #0b0f1a;
   --fg: #e8ecf1;
   --muted: #a9b3c7;
@@ -14,8 +14,9 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html, body { height: 100%; margin: 0; }
+html, body { height: 100%; }
 body {
+  margin: 0;
   font-family: system-ui, sans-serif;
   color: var(--fg);
   background: radial-gradient(1200px 800px at 80% -10%, rgba(124,92,255,0.20), transparent 60%),
@@ -23,12 +24,7 @@ body {
               var(--bg);
   line-height: 1.6;
   overflow-x: hidden;
-  overflow-y: auto;
 }
-
-/* Hide scrollbars on PC */
-body::-webkit-scrollbar { display: none; }
-body { scrollbar-width: none; }
 
 /* Decorative blobs */
 .blob {
@@ -53,14 +49,7 @@ body { scrollbar-width: none; }
   50% { transform: translate3d(2%, -2%, 0) rotate(4deg) scale(1.03); }
 }
 
-/* Content wrap */
-.wrap { 
-  position: relative; 
-  z-index: 1; 
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding: 20px;
-}
+.wrap { position: relative; z-index: 1; }
 
 /* Navbar */
 .nav {
@@ -128,12 +117,16 @@ body { scrollbar-width: none; }
 
 /* Profile + username */
 .profile-wrap {
-  margin: 40px auto;
+  position: absolute;
+  top: 100px;
+  left: 20px;
   display: flex;
   align-items: center;
   gap: 12px;
-  justify-content: center;
-  position: relative; /* scrolls with content */
+  z-index: 100;
+}
+.profile-circle {
+  transition: transform 0.3s ease;
 }
 .profile-circle img {
   width: 80px;
@@ -143,7 +136,7 @@ body { scrollbar-width: none; }
   box-shadow: var(--shadow);
   transition: transform 0.3s ease, border 0.3s ease;
 }
-.profile-wrap:hover .profile-circle img {
+.profile-wrap:hover .profile-circle {
   transform: scale(1.15);
 }
 .profile-name {
@@ -151,73 +144,6 @@ body { scrollbar-width: none; }
   font-weight: 700;
   color: var(--fg);
   text-shadow: 0 2px 6px rgba(0,0,0,0.6);
-}
-
-/* Total views (scrolls with page now) */
-.total-views {
-  margin: 20px auto;
-  display: block;
-  background: #000;
-  padding: 6px 14px;
-  border-radius: 8px;
-  border: 2px solid rgba(255,255,255,0.1);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  animation: fadeSlideUp 1.2s ease both;
-  max-width: 250px;
-  text-align: center;
-}
-.total-views h2 {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0;
-  color: var(--fg);
-  background: linear-gradient(135deg, var(--brand), var(--brand-2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.total-views span {
-  font-weight: 800;
-  font-size: 18px;
-}
-
-/* === Stats Panel (floating) === */
-.stats {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(20, 20, 20, 0.9);
-  color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-  z-index: 100;
-}
-#toggleStats {
-  width: 100%;
-  border: none;
-  outline: none;
-  background: #111;
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
-  padding: 6px 0;
-  transition: background 0.2s ease;
-}
-#toggleStats:hover { background: #222; }
-#statsPanel {
-  padding: 12px 16px;
-  display: block;
-  transition: max-height 0.3s ease;
-}
-#statsPanel h2, #statsPanel h3 {
-  margin: 6px 0;
-  font-weight: 500;
-}
-#statsPanel small {
-  display: inline-block;
-  margin-top: 4px;
-  color: #bbb;
 }
 
 /* Responsive scaling */
@@ -227,56 +153,64 @@ body { scrollbar-width: none; }
   .brand { font-size: 15px; padding: 8px 12px; }
   .profile-circle img { width: 60px; height: 60px; }
   .profile-name { font-size: 16px; }
-  .total-views { max-width: 200px; }
-}
-@media (max-width: 600px) {
-  .profile-wrap { flex-direction: column; text-align: center; }
-  .menu { flex-wrap: wrap; }
-}
-.menu a {
-  padding: 10px 14px;
-  margin: 0 2px;
-  text-decoration: none;
-  color: var(--muted);
-  font-weight: 600;
-  border-radius: 999px;
-  transition: color .2s ease, background .2s ease;
-  white-space: nowrap;
-}
-.menu a:hover { color: var(--fg); }
-.menu a.active {
-  color: #0b0f1a;
-  background: linear-gradient(135deg, var(--brand), var(--brand-2));
 }
 
-/* Profile + username */
-.profile-wrap {
-  position: relative;
-  margin: 40px auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  justify-content: center;
+/* Remove blue click highlight */
+a, a:focus, a:active,
+button, button:focus, button:active {
+  outline: none;
+  box-shadow: none;
 }
-.profile-circle img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 3px solid var(--brand-2);
-  box-shadow: var(--shadow);
-  transition: transform 0.3s ease, border 0.3s ease;
+a {
+  -webkit-tap-highlight-color: transparent;
 }
-.profile-wrap:hover .profile-circle img {
-  transform: scale(1.15);
+
+/* Top-right total views */
+.total-views {
+  position: absolute;
+  top: 65px; /* closer under navbar */
+  right: 25px;
+  background: #000; /* black background so it looks like it's hanging */
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  animation: fadeSlideUp 1.2s ease both;
 }
-.profile-name {
-  font-size: 20px;
+
+.total-views h2 {
+  font-size: 16px;
   font-weight: 700;
+  margin: 0;
   color: var(--fg);
-  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* Stats floating box */
+.total-views span {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .total-views {
+    top: 60px;
+    right: 15px;
+    padding: 5px 12px;
+  }
+
+  .total-views h2 {
+    font-size: 14px;
+  }
+
+  .total-views span {
+    font-size: 16px;
+  }
+}
+
+/* === Stats Panel === */
 .stats {
   position: fixed;
   bottom: 20px;
@@ -287,9 +221,9 @@ body { scrollbar-width: none; }
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   overflow: hidden;
   font-family: Arial, sans-serif;
-  width: 260px;
-  max-width: 90%;
 }
+
+/* Toggle Button */
 #toggleStats {
   width: 100%;
   border: none;
@@ -301,27 +235,25 @@ body { scrollbar-width: none; }
   padding: 6px 0;
   transition: background 0.2s ease;
 }
-#toggleStats:hover { background: #222; }
+#toggleStats:hover {
+  background: #222;
+}
+
+/* Panel */
 #statsPanel {
   padding: 12px 16px;
   display: block;
-}
-#statsPanel h2, #statsPanel h3 { margin: 6px 0; font-weight: 500; }
-#statsPanel small { display: inline-block; margin-top: 4px; color: #bbb; }
-
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .nav-inner { padding: 12px 16px; }
-  .menu a { padding: 8px 12px; font-size: 14px; }
-  .brand { font-size: 15px; padding: 8px 12px; }
-  .profile-circle img { width: 70px; height: 70px; }
-  .profile-name { font-size: 18px; }
+  transition: max-height 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .nav-inner { flex-direction: column; gap: 10px; text-align: center; }
-  .menu { justify-content: center; }
-  .profile-circle img { width: 60px; height: 60px; }
-  .profile-name { font-size: 16px; }
-  .stats { bottom: 10px; right: 10px; width: 90%; }
+#statsPanel h2, 
+#statsPanel h3 {
+  margin: 6px 0;
+  font-weight: 500;
+}
+
+#statsPanel small {
+  display: inline-block;
+  margin-top: 4px;
+  color: #bbb;
 }
