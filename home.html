@@ -3,41 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Site Stats - RealScripts Gamers</title>
+  <title>RealScripts Gamers - Home</title>
   <link rel="stylesheet" href="main.css">
   <link rel="stylesheet" href="home.css">
-  <link rel="stylesheet" href="stats.css">
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="home.html" class="brand">
-        <div class="dot"></div> RealScripts Gamers
-      </a>
-      <div class="spacer"></div>
-      <div class="menu">
-        <a href="home.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="services.html">Services</a>
-        <a href="contact.html">Contact</a>
-        <a href="social.html">Social</a>
-        <a href="stats.html" class="active">Stats</a>
+  <!-- Background blobs -->
+  <div class="blob"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="wrap">
+    <!-- Navbar -->
+    <nav class="nav">
+      <div class="nav-inner">
+        <a href="home.html" class="brand">
+          <div class="dot"></div> RealScripts Gamers
+        </a>
+        <div class="spacer"></div>
+        <div class="menu">
+          <a href="home.html" class="active">Home</a>
+          <a href="about.html">About</a>
+          <a href="services.html">Services</a>
+          <a href="contact.html">Contact</a>
+          <a href="social.html">Social</a>
+          <!-- ✅ Stats page link -->
+          <a href="stats.html">Stats</a>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
-  <!-- Stats Section -->
-  <section class="stats-page">
-    <h1>📊 Website Statistics</h1>
-    <div class="stats-box">
-      <h2>👁 Total Unique Views: <span id="totalViews">0</span></h2>
-      <h2>🟢 Active Visitors Now: <span id="activeUsers">0</span></h2>
-      <p id="totalStatus">loading...</p>
+    <!-- Profile -->
+    <div class="profile-wrap">
+      <div class="profile-circle">
+        <img src="channels4_profile.jpg" alt="Profile">
+      </div>
+      <span class="profile-name">RealScripts_q</span>
     </div>
-  </section>
 
-  <!-- Scripts -->
+    <!-- Intro Text with live stats -->
+    <section class="intro-text">
+      <h1>
+        Hi, I am a small YouTuber with
+        <span id="subs" class="highlight">loading subs...</span><br>
+        and accomplished over
+        <span id="views" class="highlight">loading views...</span> currently,<br>
+        with over
+        <span id="videos" class="highlight">loading videos...</span>.<br><br>
+        Channel created on <span id="created" class="highlight">loading date...</span>.
+      </h1>
+    </section>
+  </div>
+
+  <!-- Page scripts -->
   <script src="home.js"></script>
   <script src="main.js" type="module"></script>
 </body>
