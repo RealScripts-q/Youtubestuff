@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Site Stats - RealScripts Gamers</title>
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="home.html" class="brand">
+        <div class="dot"></div> RealScripts Gamers
+      </a>
+      <div class="spacer"></div>
+      <div class="menu">
+        <a href="home.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+        <a href="social.html">Social</a>
+        <a href="stats.html" class="active">Stats</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Stats Section -->
+  <section class="stats-page">
+    <h1>📊 Website Statistics</h1>
+    <div class="stats-box">
+      <h2>Total Unique Views: <span id="totalViews">0</span></h2>
+      <h2>Active Visitors Now: <span id="activeUsers">0</span></h2>
+      <p id="totalStatus">loading...</p>
+    </div>
+  </section>
+
+  <script src="home.js"></script>
+  <script src="main.js" type="module"></script>
+</body>
+</html>
