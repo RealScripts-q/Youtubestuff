@@ -257,3 +257,12 @@ a {
   margin-top: 4px;
   color: #bbb;
 }
+/* Force mobile scaling on big screens */
+@media (min-width: 901px) {
+  body {
+    max-width: 420px;   /* typical mobile width */
+    margin: 0 auto;     /* center on large screens */
+    transform: scale(1.2); /* optional zoom-in so it doesn’t look tiny */
+    transform-origin: top center;
+  }
+}
