@@ -1,0 +1,84 @@
+/* === Stats Page === */
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #1f1f1f, #121212);
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar adjustments for stats page */
+.nav {
+  background: #222;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 16px;
+  transition: background 0.2s ease;
+}
+
+.nav a:hover, .nav a.active {
+  background: #444;
+  border-radius: 8px;
+}
+
+/* Main stats section */
+.stats-page {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.stats-page h1 {
+  font-size: 3rem;
+  margin-bottom: 40px;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+/* Stats box cards */
+.stats-box {
+  display: inline-block;
+  background: #2c2c2c;
+  padding: 40px 60px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  min-width: 300px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stats-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+}
+
+.stats-box h2 {
+  margin: 20px 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f5f5f5;
+}
+
+.stats-box p {
+  margin-top: 15px;
+  color: #aaa;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .stats-box {
+    width: 90%;
+    padding: 30px 20px;
+  }
+
+  .stats-page h1 {
+    font-size: 2rem;
+  }
+
+  .stats-box h2 {
+    font-size: 1.5rem;
+  }
+}
