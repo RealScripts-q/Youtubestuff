@@ -1,10 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>RealScripts Gamers - Home</title>
   <link rel="stylesheet" href="main.css">
   <link rel="stylesheet" href="home.css">
@@ -13,7 +12,7 @@
   <!-- Background blobs -->
   <div class="blob"></div>
   <div class="blob blob-2"></div>
-
+ 
   <div class="wrap">
     <!-- Navbar -->
     <nav class="nav">
@@ -28,12 +27,33 @@
           <a href="services.html">Services</a>
           <a href="contact.html">Contact</a>
           <a href="social.html">Social</a>
-          <!-- ✅ Stats page link -->
           <a href="stats.html">Stats</a>
+ 
+          <!-- Theme dropdown -->
+          <select id="theme-select">
+            <option value="default">Default</option>
+            <option value="amber">Amber</option>
+            <option value="grey">Grey</option>
+            <option value="brown">Brown</option>
+            <option value="green">Green</option>
+            <option value="pink">Pink</option>
+            <option value="purple">Purple</option>
+            <option value="rainbow">Rainbow</option>
+            <option value="lime">Lime</option>
+            <option value="teal">Teal</option>
+            <option value="orange">Orange</option>
+            <option value="cyan">Cyan</option>
+            <option value="magenta">Magenta</option>
+            <option value="olive">Olive</option>
+            <option value="coral">Coral</option>
+            <option value="indigo">Indigo</option>
+            <option value="rose">Rose</option>
+            <option value="mint">Mint</option>
+          </select>
         </div>
       </div>
     </nav>
-
+ 
     <!-- Profile -->
     <div class="profile-wrap">
       <div class="profile-circle">
@@ -41,7 +61,7 @@
       </div>
       <span class="profile-name">RealScripts_q</span>
     </div>
-
+ 
     <!-- Intro Text with live stats -->
     <section class="intro-text">
       <h1>
@@ -55,9 +75,10 @@
       </h1>
     </section>
   </div>
-
-  <!-- Page scripts -->
-  <script src="home.js"></script>
+ 
+  <!-- Scripts -->
+  <script src="home.js" type="module"></script>
   <script src="main.js" type="module"></script>
+  <script src="theme.js"></script>
 </body>
 </html>
