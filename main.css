@@ -79,17 +79,31 @@ body.theme-purple {
   --stroke: rgba(159,0,255,0.2);
 }
  
-/* Rainbow Theme */
+ /* Rainbow Theme */
 body.theme-rainbow {
-  --bg: linear-gradient(270deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
   --fg: #ffffff;
   --muted: #cccccc;
   --brand: #ffffff;
   --brand-2: #ffffff;
   --card: rgba(255,255,255,0.08);
   --stroke: rgba(255,255,255,0.15);
-  animation: rainbowBG 15s linear infinite;
+
+  /* Animate background through 7 rainbow colors */
+  animation: rainbowCycle 7s linear infinite;
 }
+
+/* Keyframes for rainbow cycle (1 color per second) */
+@keyframes rainbowCycle {
+  0%   { background: #ff0000; }   /* Red */
+  14%  { background: #ff7f00; }   /* Orange */
+  28%  { background: #ffff00; }   /* Yellow */
+  42%  { background: #00ff00; }   /* Green */
+  57%  { background: #0000ff; }   /* Blue */
+  71%  { background: #4b0082; }   /* Indigo */
+  85%  { background: #8b00ff; }   /* Violet */
+  100% { background: #ff0000; }   /* Back to Red */
+}
+
  
 /* Lime Theme */
 body.theme-lime {
