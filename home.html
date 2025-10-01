@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,13 +57,17 @@
 
   <!-- Settings Overlay -->
   <div class="settings-overlay" id="settings-overlay">
+    <!-- Close Overlay -->
     <button id="settings-close" class="settings-close">&times;</button>
 
-    <!-- Only Themes Button -->
-    <button id="themes-btn" class="overlay-btn" style="display:none;">Themes</button>
+    <!-- Themes Button -->
+    <button id="themes-btn" class="overlay-btn">🎨 Themes</button>
+
+    <!-- Back Button (inside themes) -->
+    <button id="themes-back" class="settings-close" style="display:none;">&times;</button>
 
     <!-- Theme Grid -->
-    <div class="theme-grid" id="theme-grid">
+    <div class="theme-grid" id="theme-grid" style="display:none;">
       <div class="theme-square" data-theme="default" style="background:#1a2a4c;"></div>
       <div class="theme-square" data-theme="amber" style="background:#ff9f00;"></div>
       <div class="theme-square" data-theme="grey" style="background:#888;"></div>
@@ -84,7 +89,7 @@
     </div>
   </div>
 
-  <!-- JS -->
+  <!-- External JS -->
   <script src="themes.js"></script>
   <script src="home.js"></script>
 </body>
