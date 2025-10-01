@@ -1,23 +1,14 @@
-// ==========================
-// ELEMENT SELECTORS
-// ==========================
+
 const themeSquares = document.querySelectorAll('.theme-square');
 const settingsButton = document.getElementById('settings-button');
 const settingsOverlay = document.getElementById('settings-overlay');
 const settingsClose = document.getElementById('settings-close');
+const themesBtn = document.getElementById('themes-btn');
+const themesBack = document.getElementById('themes-back');
+const themeGrid = document.getElementById('theme-grid');
 const wrap = document.querySelector('.wrap');
-const themeGrid = document.querySelector('.theme-grid');
 
-// Dynamically create only the "Themes" button inside the overlay
-const themesBtn = document.createElement('button');
-themesBtn.id = 'themes-btn';
-themesBtn.classList.add('overlay-btn');
-themesBtn.textContent = 'Themes';
-settingsOverlay.prepend(themesBtn);
-
-// ==========================
-// THEME FUNCTIONS
-// ==========================
+// Theme switcher
 function applyTheme(themeName) {
   document.body.classList.forEach(cls => {
     if (cls.startsWith('theme-')) document.body.classList.remove(cls);
@@ -26,38 +17,45 @@ function applyTheme(themeName) {
   localStorage.setItem('selectedTheme', themeName);
 }
 
-// Load saved theme on page load
+// Load saved theme
 document.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('selectedTheme') || 'default';
   applyTheme(savedTheme);
 });
 
-// ==========================
-// SETTINGS OVERLAY EVENTS
-// ==========================
-
-// Open settings overlay
+// Open settings
 settingsButton.addEventListener('click', () => {
   wrap.style.display = 'none';
-  settingsOverlay.style.background = 'transparent';
   settingsOverlay.style.display = 'flex';
-  themeGrid.style.display = 'none'; // hide grid initially
+  themesBtn.style.display = 'block';
+  themeGrid.style.display = 'none';
+  themesBack.style.display = 'none';
 });
 
-// Close overlay
+// Close settings
 settingsClose.addEventListener('click', () => {
   settingsOverlay.style.display = 'none';
   wrap.style.display = 'block';
 });
 
-// Show theme grid when Themes button clicked
+// Show theme grid
 themesBtn.addEventListener('click', () => {
-  themeGrid.style.display = themeGrid.style.display === 'grid' ? 'none' : 'grid';
+  themesBtn.style.display = 'none';
+  themeGrid.style.display = 'grid';
+  themesBack.style.display = 'block';
 });
 
-// Click theme square to apply theme
+// Back from theme grid
+themesBack.addEventListener('click', () => {
+  themesBtn.style.display = 'block';
+  themeGrid.style.display = 'none';
+  themesBack.style.display = 'none';
+});
+
+// Apply theme on click
 themeSquares.forEach(square => {
   square.addEventListener('click', () => {
     applyTheme(square.dataset.theme);
   });
 });
+
