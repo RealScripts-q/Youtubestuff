@@ -25,6 +25,8 @@
           <a href="social.html" class="active">Social</a>
           <a href="contact.html">Contact</a>
           <a href="stats.html">Stats</a>
+          <!-- ⚙️ Settings button -->
+          <button id="settings-button" class="settings-btn">⚙️ Settings</button>
         </div>
       </div>
     </nav>
@@ -33,20 +35,64 @@
     <div class="social-section">
       <h1 class="social-title">Follow Me On</h1>
       <div class="social-cards">
-        <a href="https://m.youtube.com/channel/UCKCKRcJVVdLSaZoKQU-CuVA" target="_blank" class="social-card youtube">
+        <a href="https://m.youtube.com/channel/UCKCKRcJVVdLSaZoKQU-CuVA" target="_blank" rel="noopener noreferrer" class="social-card youtube">
           <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube Logo" class="social-logo">
           YouTube
         </a>
-        <a href="https://www.tiktok.com/@.mdxres" target="_blank" class="social-card tiktok">
+        <a href="https://www.tiktok.com/@.mdxres" target="_blank" rel="noopener noreferrer" class="social-card tiktok">
           <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok Logo" class="social-logo">
           TikTok
         </a>
-        <a href="https://discord.gg/96r6mQzmm8" target="_blank" class="social-card discord">
+        <a href="https://discord.gg/96r6mQzmm8" target="_blank" rel="noopener noreferrer" class="social-card discord">
           <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg" alt="Discord Logo" class="social-logo">
           Discord
         </a>
       </div>
     </div>
   </div>
+
+  <!-- ⚙️ Settings Overlay (same as Services page) -->
+  <div class="settings-overlay" id="settings-overlay">
+    <!-- Close entire overlay -->
+    <button id="settings-close" class="settings-close" aria-label="Close settings">&times;</button>
+
+    <!-- Main settings -->
+    <div id="settings-main" style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+      <button id="themes-btn" class="overlay-btn">🎨 Themes</button>
+    </div>
+
+    <!-- Themes panel -->
+    <div id="themes-panel" style="display:none; width: 100%; max-width: 900px; padding: 20px; box-sizing: border-box;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h2 style="margin:0; color:var(--fg)">Choose a Theme</h2>
+        <button id="themes-back" class="settings-close" aria-label="Back to settings">&times;</button>
+      </div>
+
+      <div class="theme-grid" id="theme-grid">
+        <div class="theme-square" data-theme="default" style="background:#1a2a4c;"></div>
+        <div class="theme-square" data-theme="amber" style="background:#ff9f00;"></div>
+        <div class="theme-square" data-theme="grey" style="background:#888;"></div>
+        <div class="theme-square" data-theme="brown" style="background:#a0522d;"></div>
+        <div class="theme-square" data-theme="green" style="background:#1aff00;"></div>
+        <div class="theme-square" data-theme="pink" style="background:#ff00aa;"></div>
+        <div class="theme-square" data-theme="purple" style="background:#9f00ff;"></div>
+        <div class="theme-square" data-theme="rainbow" style="background:linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);"></div>
+        <div class="theme-square" data-theme="lime" style="background:#39ff14;"></div>
+        <div class="theme-square" data-theme="teal" style="background:#00f5d4;"></div>
+        <div class="theme-square" data-theme="orange" style="background:#ff6600;"></div>
+        <div class="theme-square" data-theme="cyan" style="background:#00cfff;"></div>
+        <div class="theme-square" data-theme="magenta" style="background:#ff00ff;"></div>
+        <div class="theme-square" data-theme="olive" style="background:#99cc00;"></div>
+        <div class="theme-square" data-theme="coral" style="background:#ff4444;"></div>
+        <div class="theme-square" data-theme="indigo" style="background:#4b00ff;"></div>
+        <div class="theme-square" data-theme="rose" style="background:#ff3366;"></div>
+        <div class="theme-square" data-theme="mint" style="background:#00ff99;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared JS -->
+  <script src="themes.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
