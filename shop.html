@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RealScripts Gamers - Shop</title>
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="shop.css">
+</head>
+<body>
+  <!-- Background blobs -->
+  <div class="blob"></div>
+  <div class="blob blob-2"></div>
+
+  <div id="shop-container">
+    <div class="wrap">
+      <!-- Navbar -->
+      <nav class="nav">
+        <div class="nav-inner">
+          <a href="home.html" class="brand">
+            <div class="dot"></div> RealScripts Gamers
+          </a>
+          <div class="spacer"></div>
+          <div class="menu">
+            <a href="home.html">Home</a>
+            <a href="shop.html" class="active">Shop</a>
+            <input type="text" id="shop-search" placeholder="🔍 Search items..." class="search-bar">
+            <button id="settings-button" class="settings-btn">⚙️ Settings</button>
+            <button id="cart-toggle" class="cart-btn">🛒</button>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Shop Items -->
+      <section class="shop" id="shop-grid">
+        <h2 class="section-title">🔥 Coming Soon</h2>
+      </section>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cart" class="cart-sidebar">
+      <div class="cart-header">
+        <h2>Your Cart</h2>
+        <button id="close-cart" class="close-btn">✖</button>
+      </div>
+      <ul id="cart-items"></ul>
+      <div class="cart-footer">
+        <strong>Total: <span id="cart-total">0.00</span></strong>
+        <button id="checkout-btn" class="checkout-btn">Checkout</button>
+      </div>
+    </div>
+
+    <!-- Settings Overlay -->
+    <div class="settings-overlay" id="settings-overlay">
+      <button id="settings-close" class="settings-close">&times;</button>
+      <h2>Settings</h2>
+
+      <div class="overlay-buttons">
+        <button id="themes-btn" class="overlay-btn">🎨 Themes</button>
+        <button id="reset-settings" class="overlay-btn">♻️ Reset Settings</button>
+      </div>
+
+      <!-- Theme Grid -->
+      <div class="theme-grid" id="theme-grid" style="display:none;">
+        <div class="theme-square" data-theme="default" style="background:#1a2a4c;"></div>
+        <div class="theme-square" data-theme="amber" style="background:#ff9f00;"></div>
+        <div class="theme-square" data-theme="grey" style="background:#888;"></div>
+        <div class="theme-square" data-theme="brown" style="background:#a0522d;"></div>
+        <div class="theme-square" data-theme="green" style="background:#1aff00;"></div>
+        <div class="theme-square" data-theme="pink" style="background:#ff00aa;"></div>
+        <div class="theme-square" data-theme="purple" style="background:#9f00ff;"></div>
+        <div class="theme-square" data-theme="rainbow" style="background:linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);"></div>
+        <div class="theme-square" data-theme="lime" style="background:#39ff14;"></div>
+        <div class="theme-square" data-theme="teal" style="background:#00f5d4;"></div>
+        <div class="theme-square" data-theme="orange" style="background:#ff6600;"></div>
+        <div class="theme-square" data-theme="cyan" style="background:#00cfff;"></div>
+        <div class="theme-square" data-theme="magenta" style="background:#ff00ff;"></div>
+        <div class="theme-square" data-theme="olive" style="background:#99cc00;"></div>
+        <div class="theme-square" data-theme="coral" style="background:#ff4444;"></div>
+        <div class="theme-square" data-theme="indigo" style="background:#4b00ff;"></div>
+        <div class="theme-square" data-theme="rose" style="background:#ff3366;"></div>
+        <div class="theme-square" data-theme="mint" style="background:#00ff99;"></div>
+      </div>
+
+      <!-- Extra Settings -->
+      <div id="additional-settings" style="margin-top:20px; text-align:center; display:flex; flex-direction:column; gap:15px;">
+        <div class="font-size-settings">
+          <label style="margin-right:10px;">Font Size:</label>
+          <button onclick="adjustFontSize(-1)">A-</button>
+          <button onclick="adjustFontSize(1)">A+</button>
+        </div>
+
+        <div class="currency-settings">
+          <label for="currency-select" style="margin-right:10px;">Currency:</label>
+          <select id="currency-select">
+            <option value="USD">$ USD</option>
+            <option value="EUR">€ EUR</option>
+            <option value="GBP">£ GBP</option>
+            <option value="JPY">¥ JPY</option>
+            <option value="AUD">A$ AUD</option>
+            <option value="CAD">C$ CAD</option>
+            <option value="CHF">CHF</option>
+          </select>
+        </div>
+
+        <div class="notification-settings">
+          <label>
+            <input type="checkbox" id="cart-notifications" checked>
+            Show cart notifications
+          </label>
+        </div>
+      </div>
+    </div>
+
+
+
+  <!-- Scripts -->
+  <script src="themes.js"></script>
+  <script src="shop.js"></script>
+  <script>
+    // Font Size Adjust
+    let fontSize = 16;
+    function adjustFontSize(change) {
+      fontSize += change;
+      if (fontSize < 12) fontSize = 12;
+      if (fontSize > 24) fontSize = 24;
+      document.documentElement.style.fontSize = fontSize + "px";
+    }
+
+    // Reset Settings
+    document.getElementById("reset-settings").onclick = () => location.reload();
+
+    // Search Filter
+    document.getElementById("shop-search").addEventListener("input", e => {
+      const term = e.target.value.toLowerCase();
+      document.querySelectorAll(".item").forEach(item => {
+        item.style.display = item.querySelector("h3").textContent.toLowerCase().includes(term)
+          ? "block" : "none";
+      });
+    });
+  </script>
+</body>
+</html>
