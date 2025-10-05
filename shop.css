@@ -70,7 +70,10 @@ body {
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
+  position: relative; /* Add this */
+  z-index: 10;        /* Make sure links are above the search bar */
 }
+
 .menu a:hover {
   color: var(--brand);
 }
@@ -90,7 +93,10 @@ body {
   color: var(--fg);
   outline: none;
   transition: border 0.3s ease;
+  position: relative;
+  z-index: 1; /* Keep it below links */
 }
+
 .search-bar:focus {
   border-color: var(--brand);
 }
