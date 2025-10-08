@@ -49,6 +49,7 @@
 
   <form id="feedbackForm">
     <h2>Send Feedback</h2>
+
     <label>Name</label>
     <input type="text" id="name" required>
 
@@ -64,19 +65,19 @@
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    // Initialize EmailJS with your public key
+    // Initialize EmailJS
     (function() {
       emailjs.init("HCuEjCt2NznH_cmMUhzht");
     })();
 
-    // Handle form submit
     document.getElementById("feedbackForm").addEventListener("submit", function(event) {
       event.preventDefault();
 
-      // Send email using EmailJS
-      emailjs.send("service_thr433r", "template_73eoxm3", {
-        from_name: document.getElementById("name").value,
+      emailjs.send("service_thr433r", "template_dwg7o05", {
+        title: "Contact Us",
+        name: document.getElementById("name").value,
         from_email: document.getElementById("email").value,
+        email: document.getElementById("email").value,
         message: document.getElementById("message").value
       })
       .then(function(response) {
