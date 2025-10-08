@@ -4,108 +4,76 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Feedback Form</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f5f5f5, #e3e3e3);
+      background: #f4f4f4;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
     form {
-      background: white;
+      background: #fff;
       padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-      width: 320px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      width: 300px;
     }
     input, textarea, button {
       width: 100%;
       margin-top: 10px;
       padding: 10px;
+      border-radius: 5px;
       border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
     }
     button {
-      background: #007bff;
+      background-color: #007bff;
       color: white;
-      font-weight: bold;
-      border: none;
       cursor: pointer;
-      transition: background 0.2s;
     }
     button:hover {
-      background: #0056b3;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 15px;
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-
   <form id="feedbackForm">
     <h2>Send Feedback</h2>
-
-    <label>Name</label>
-    <input type="text" id="name" placeholder="Your name" required />
-
-    <label>Email</label>
-    <input type="email" id="email" placeholder="you@example.com" required />
-
-    <label>Message</label>
-    <textarea id="message" rows="5" placeholder="Your feedback..." required></textarea>
-
-    <button type="submit" id="sendBtn">Send</button>
+    <input type="text" id="name" placeholder="Your Name" required />
+    <input type="email" id="email" placeholder="Your Email" required />
+    <textarea id="message" placeholder="Your Message" rows="5" required></textarea>
+    <button type="submit">Send</button>
   </form>
 
-  <!-- EmailJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    // Initialize EmailJS with your public key
     (function() {
-      emailjs.init("HCuEjCt2NznH_cmMUhzht");
+      // ✅ Initialize EmailJS
+      emailjs.init({ publicKey: "HCuEjCt2NznH_cmMUhzht" });
     })();
 
-    const form = document.getElementById("feedbackForm");
-    const button = document.getElementById("sendBtn");
+    document.getElementById("feedbackForm").addEventListener("submit", function(e) {
+      e.preventDefault();
 
-    form.addEventListener("submit", function(event) {
-      event.preventDefault();
+      const params = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        message: document.getElementById("message").value,
+        title: "Website Feedback"
+      };
 
-      // Disable button & show loading text
-      button.disabled = true;
-      button.textContent = "Sending...";
-
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const message = document.getElementById("message").value;
-
-      // Send email using EmailJS
-      emailjs.send("service_thr433r", "template_dwg7o05", {
-        title: "Feedback from " + name,
-        name: name,
-        from_email: email,
-        email: email,
-        message: message
-      })
-      .then(function(response) {
-        alert("✅ Feedback sent successfully!");
-        form.reset();
-      })
-      .catch(function(error) {
-        console.error("EmailJS Error:", error);
-        alert("❌ Failed to send feedback. Check console for details.");
-      })
-      .finally(() => {
-        button.disabled = false;
-        button.textContent = "Send";
-      });
+      // ✅ Make sure IDs are correct (service + template)
+      emailjs.send("service_thr433r", "template_dwg7o05", params)
+        .then(() => {
+          alert("✅ Feedback sent successfully!");
+          e.target.reset();
+        })
+        .catch((error) => {
+          console.error("❌ EmailJS Error:", error);
+          alert("❌ Failed to send feedback. Check console for details.");
+        });
     });
   </script>
-
 </body>
 </html>
